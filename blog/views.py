@@ -4,7 +4,7 @@ from blog.models import *
 
 
 def blog_view(request):
-    posts = Post.objects.filter(date_time_published__lte=timezone.now(),status=True)
+    posts = Post.objects.filter(date_time_published__lte=timezone.now(), status=True)
     context = {
         'posts': posts,
     }
@@ -12,8 +12,8 @@ def blog_view(request):
 
 
 def blog_detail_view(request, pid):
-    post = get_object_or_404(Post, id=pid, status=True)
-    posts = Post.objects.filter(date_time_published__lte=timezone.now(),status=True)
+    post = get_object_or_404(Post, id=pid, date_time_published__lte=timezone.now(), status=True)
+    posts = Post.objects.filter(date_time_published__lte=timezone.now(), status=True)
     
     post_list = list(posts)
     try:
