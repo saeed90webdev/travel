@@ -99,8 +99,8 @@
             </div>
             <a class="posts-title" href="{% url "blog:blog_detail" pid=post.id %}"><h3>{{post.title}}</h3></a>
             <p class="excert">
-              {% comment %} {{post.content | truncatewords:50}} {% endcomment %}
-              {{post.excerpt}}
+              {{post.content | truncatewords:50}}
+
             </p>
             <a href="{% url "blog:blog_detail" pid=post.id %}" class="primary-btn">View More</a>
           </div>

@@ -33,9 +33,3 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    # def snippets(self):
-    #     return self.content[:100] + "..."
-
-    def excerpt(self, word_count=30):
-        cleaned_text = strip_tags(self.content)
-        return Truncator(cleaned_text).words(word_count, truncate=' ...')
