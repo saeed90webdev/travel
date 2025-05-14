@@ -1,4 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %}
+{% extends "_base.html" %}  {% load blog-tags %} {% load static %} {% block content %}
 <!-- start banner Area -->
 <section class="banner-area relative blog-home-banner" id="home">
   <div class="overlay overlay-bg"></div>
@@ -83,11 +83,11 @@
           <div class="col-lg-3 col-md-3 meta-details">
             <ul class="tags">
               {% for cat in post.category.all %}
-              <li><a href="#">{{cat.name}}</a>{% if not forloop.last%},{% endif %} </li>
+              <li><a href="{% url 'blog:blog_category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last%},{% endif %}</li>
               {% endfor %}
             </ul>
             <div class="user-details row">
-              <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
+              <p class="user-name col-lg-12 col-md-12 col-6"><a href="{% url "blog:blog_author" author_username=post.author.username %}">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
               <p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.date_time_published|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
               <p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_view}} Views</a> <span class="lnr lnr-eye"></span></p>
               <p class="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span class="lnr lnr-bubble"></span></p>
@@ -132,104 +132,14 @@
       </div>
       <div class="col-lg-4 sidebar-widgets">
         <div class="widget-wrap">
-          <div class="single-sidebar-widget search-widget">
-            <form class="search-form" action="#">
-              <input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" />
-              <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-          </div>
+          {% include "blog/blog-search.html" %}
 
           {% include "blog/blog-writer.html" %}
 
-          <div class="single-sidebar-widget popular-post-widget">
-            <h4 class="popular-title">Popular Posts</h4>
-            <div class="popular-post-list">
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="{% static 'img/blog/pp1.jpg' %}" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Space The Final Frontier</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="{% static 'img/blog/pp2.jpg' %}" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>The Amazing Hubble</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="{% static 'img/blog/pp3.jpg' %}" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Astronomy Or Astrology</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="{% static 'img/blog/pp4.jpg' %}" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Asteroids telescope</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% latest_post %}
+          {% postcategories %}
+          
           {% include "blog/blog-ads.html" %}
-          <div class="single-sidebar-widget post-category-widget">
-            <h4 class="category-title">Post Catgories</h4>
-            <ul class="cat-list">
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Technology</p>
-                  <p>37</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Lifestyle</p>
-                  <p>24</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Fashion</p>
-                  <p>59</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Art</p>
-                  <p>29</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Food</p>
-                  <p>15</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Architecture</p>
-                  <p>09</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="d-flex justify-content-between">
-                  <p>Adventure</p>
-                  <p>44</p>
-                </a>
-              </li>
-            </ul>
-          </div>
           <div class="single-sidebar-widget newsletter-widget">
             <h4 class="newsletter-title">Newsletter</h4>
             <p>Here, I focus on a range of items and features that we use in life without giving them a second thought.</p>

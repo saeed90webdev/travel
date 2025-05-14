@@ -1,4 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %}
+{% extends "_base.html" %} {% load static %} {% load blog-tags %} {% block content %}
 <!-- start banner Area -->
 <section class="relative about-banner">
   <div class="overlay overlay-bg"></div>
@@ -29,7 +29,7 @@
           <div class="col-lg-3 col-md-3 meta-details">
             <ul class="tags">
               {% for cat in post.category.all %}
-              <li><a href="#">{{cat.name}} </a></li>
+              <li><a href="#">{{cat.name}}</a>{% if not forloop.last%},{% endif %}</a></li>
               {% endfor %}
             </ul>
             <div class="user-details row">
@@ -63,7 +63,7 @@
             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
               {% if prev_post %}
               <div class="thumb">
-                <a href="{% url 'blog:blog_detail' pid=prev_post.id %}"><img class="img-fluid" src="{{ prev_post.image.url }}" alt="" /></a>
+                <a href="{% url 'blog:blog_detail' pid=prev_post.id %}"><img class="img-fluid" style='max-width: 100px;' src="{{ prev_post.image.url }}" alt="" /></a>
               </div>
               <div class="arrow">
                 <a href="{% url 'blog:blog_detail' pid=prev_post.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
@@ -84,7 +84,7 @@
                 <a href="{% url 'blog:blog_detail' pid=next_post.id %}"><span class="lnr text-white lnr-arrow-right"></span></a>
               </div>
               <div class="thumb">
-                <a href="{% url 'blog:blog_detail' pid=next_post.id %}"><img class="img-fluid" src="{{ next_post.image.url }}" alt="" /></a>
+                <a href="{% url 'blog:blog_detail' pid=next_post.id %}"><img class="img-fluid" style='max-width: 100px;' src="{{ next_post.image.url }}" alt="" /></a>
               </div>
               {% endif %}
             </div>
@@ -210,47 +210,8 @@
 
           {% include "blog/blog-writer.html" %}
 
-          <div class="single-sidebar-widget popular-post-widget">
-            <h4 class="popular-title">Popular Posts</h4>
-            <div class="popular-post-list">
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="img/blog/pp1.jpg" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Space The Final Frontier</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="img/blog/pp2.jpg" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>The Amazing Hubble</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="img/blog/pp3.jpg" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Astronomy Or Astrology</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-              <div class="single-post-list d-flex flex-row align-items-center">
-                <div class="thumb">
-                  <img class="img-fluid" src="img/blog/pp4.jpg" alt="" />
-                </div>
-                <div class="details">
-                  <a href="blog-single.html"><h6>Asteroids telescope</h6></a>
-                  <p>02 Hours ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% latest_post %}
+
           {% include "blog/blog-ads.html" %}
           <div class="single-sidebar-widget post-category-widget">
             <h4 class="category-title">Post Catgories</h4>
