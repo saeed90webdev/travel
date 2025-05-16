@@ -1,3 +1,4 @@
+{% load humanize %}
 {% load static %}
 
 <div class="single-sidebar-widget popular-post-widget">
@@ -9,7 +10,8 @@
     </div>
     <div class="details">
       <a href="{% url "blog:blog_detail" pid=post.id %}"><h6>{{post.title|truncatewords:3}}</h6></a>
-      <p>{{post.date_time_published|date:"d M Y"}}</p>
+      {% comment %} <p>{{post.date_time_published|date:"d M Y"}}</p> {% endcomment %}
+      <p>{{post.date_time_published|naturaltime}}</p>
     </div>
   </div>
   {% endfor %}
