@@ -112,11 +112,12 @@
             <div class="single-footer-widget">
               <h6>Newsletter</h6>
               <p>For business professionals caught between high OEM price and mediocre print and graphic output.</p>
-              <div id="mc_embed_signup">
-                <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscription relative">
+              <div>
+                <form action="{% url "core:newsletter" %}" method="post" class="subscription relative">
+                  {% csrf_token %}
                   <div class="input-group d-flex flex-row">
-                    <input name="EMAIL" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email" />
-                    <button class="btn bb-btn"><span class="lnr lnr-location"></span></button>
+                    <input name="email" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email" />
+                    <button class="btn bb-btn" type='submit'><span class="lnr lnr-location"></span></button>
                   </div>
                   <div class="mt-10 info"></div>
                 </form>
@@ -160,6 +161,43 @@
       </div>
     </footer>
     <!-- End footer Area -->
+    <!-- start messages modal -->
+    <div id="messageModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalMessage"></p>
+      </div>
+    </div>
+    <!-- end messages modal -->
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var modal = document.getElementById("messageModal");
+        var span = document.getElementsByClassName("close")[0];
+        var messageText = document.getElementById("modalMessage");
+
+        {% if messages %}
+            {% for message in messages %}
+                messageText.innerHTML = "{{ message }}";
+                modal.style.display = "block";
+            {% endfor %}
+        {% endif %}
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    });
+</script>
+
+
+
 
     <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
