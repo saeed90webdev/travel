@@ -7,8 +7,8 @@ from django.utils import timezone
 
 
 @register.inclusion_tag("blog/latest-posts.html")
-def latest_post(arg=3):
-    posts = Post.objects.filter(date_time_published__lte=timezone.now(), status=True).order_by('date_time_published')[:arg]
+def latest_post(arg=4):
+    posts = Post.objects.filter(date_time_published__lte=timezone.now(), status=True).order_by('-date_time_published')[:arg]
     return {'posts' : posts}
 
 
