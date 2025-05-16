@@ -40,13 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    
+
+    'robots',
+    "debug_toolbar",
+    "taggit",
+    'django_summernote',
 
     'core.apps.CoreConfig',
     'blog.apps.BlogConfig',
 ]
 
+# sites framework
 SITE_ID = 2
+
+# robots
+ROBOTS_USE_HOST = False
+ROBOTS_USE_SITEMAP = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +65,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -136,3 +150,7 @@ MEDIA_ROOTS = BASE_DIR/'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SUMMERNOTE
+SUMMERNOTE_THEME = 'bs5'
+

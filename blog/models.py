@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import Truncator
 from django.utils.html import strip_tags
+from taggit.managers import TaggableManager
 
 
 class Category(models.Model):
@@ -21,6 +22,7 @@ class Post(models.Model):
     category = models.ManyToManyField(Category)
     title = models.CharField(max_length=255)
     content = models.TextField()
+    tags = TaggableManager()
     image = models.ImageField(upload_to='blog/', default='blog/default.jpg')
     counted_view = models.IntegerField(default=0)
     status = models.BooleanField(default=False)
