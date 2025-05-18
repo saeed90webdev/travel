@@ -40,6 +40,7 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     ),
     re_path(r'^robots\.txt', include('robots.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 urlpatterns += debug_toolbar_urls()
