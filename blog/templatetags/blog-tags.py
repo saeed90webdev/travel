@@ -20,4 +20,8 @@ def postcategories():
     for cat in categoreis:
         cat_dict[cat] = posts.filter(category=cat).count()
     return {'categories': cat_dict}
+
+@register.simple_tag(name='comments_count')
+def function(pid):
+    return Comment.objects.filter(post=pid, is_approved=True).count()
         

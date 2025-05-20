@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from blog.models import *
+from blog.forms import CommentForm
+from django.contrib import messages
 
 
 def blog_view(request, **kwargs):
@@ -21,9 +23,6 @@ def blog_view(request, **kwargs):
         posts = posts.page(1)
     except EmptyPage:
         posts = posts.page(1)
-        
-        
-    
     context = {
         'posts': posts,
     }
@@ -31,11 +30,24 @@ def blog_view(request, **kwargs):
 
 
 def blog_detail_view(request, pid):
-    post = get_object_or_404(
-        Post, id=pid, date_time_published__lte=timezone.now(), status=True)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 'Your message submited successfully')
+            form = CommentForm()
+    else:
+        messages.add_message(request, messages.ERROR,
+                             'Your message did not submit.')
+        form = CommentForm()
+        
     posts = Post.objects.filter(
         date_time_published__lte=timezone.now(), status=True)
-
+    post = get_object_or_404(
+        Post, id=pid, date_time_published__lte=timezone.now(), status=True)
+    comments = Comment.objects.filter(
+        post=post.id, is_approved=True).order_by('-date_time_created')
     post_list = list(posts)
     try:
         current_index = post_list.index(post)
@@ -49,10 +61,14 @@ def blog_detail_view(request, pid):
     post.counted_view += 1
     post.save()
 
+    form = CommentForm()
+
     context = {
         'post': post,
         'prev_post': prev_post,
         'next_post': next_post,
+        'comments': comments,
+        'form': form,
     }
     return render(request, 'blog/blog-detail.html', context)
 
@@ -69,7 +85,7 @@ def blog_search_view(request):
     posts = Post.objects.filter(
         date_time_published__lte=timezone.now(), status=True)
     if request.method == 'GET':
-        if s:= request.GET.get('s'):
+        if s := request.GET.get('s'):
             posts = posts.filter(content__contains=s)
     context = {
         'posts': posts,

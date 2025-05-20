@@ -14,3 +14,13 @@ class PostAdmin(SummernoteModelAdmin):
     ordering = ('-date_time_created',)
     search_fields = ('title', 'content',)
     summernote_fields = ('content',)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    date_hierarchy = "date_time_created"
+    list_display = ('name', 'post', 'date_time_created', 'is_approved',)
+    list_filter = ('is_approved',)
+    list_editable = ('is_approved',)
+    ordering = ('-date_time_created',)
+    search_fields = ('name', 'message',)
