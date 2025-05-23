@@ -4,6 +4,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from blog.models import *
 from blog.forms import CommentForm
 from django.contrib import messages
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 
 def blog_view(request, **kwargs):
@@ -35,42 +37,42 @@ def blog_detail_view(request, pid):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS,
-                                 'Your message submited successfully')
-            form = CommentForm()
-    else:
-        messages.add_message(request, messages.ERROR,
-                             'Your message did not submit.')
-        form = CommentForm()
-        
+                                'Your message submited successfully')
+        else:
+            messages.add_message(request, messages.ERROR,
+                            'Your message did not submit.')    
     posts = Post.objects.filter(
         date_time_published__lte=timezone.now(), status=True)
     post = get_object_or_404(
         Post, id=pid, date_time_published__lte=timezone.now(), status=True)
-    comments = Comment.objects.filter(
-        post=post.id, is_approved=True).order_by('-date_time_created')
-    post_list = list(posts)
-    try:
-        current_index = post_list.index(post)
-    except ValueError:
-        current_index = -1
+    if post.is_login_required and not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('accounts:login'))
+    else:
+        comments = Comment.objects.filter(
+            post=post.id, is_approved=True).order_by('-date_time_created')
+        post_list = list(posts)
+        try:
+            current_index = post_list.index(post)
+        except ValueError:
+            current_index = -1
 
-    prev_post = post_list[current_index - 1] if current_index > 0 else None
-    next_post = post_list[current_index +
-                          1] if current_index < len(post_list) - 1 else None
+        prev_post = post_list[current_index - 1] if current_index > 0 else None
+        next_post = post_list[current_index +
+                            1] if current_index < len(post_list) - 1 else None
 
-    post.counted_view += 1
-    post.save()
+        post.counted_view += 1
+        post.save()
 
-    form = CommentForm()
+        form = CommentForm()
 
-    context = {
-        'post': post,
-        'prev_post': prev_post,
-        'next_post': next_post,
-        'comments': comments,
-        'form': form,
-    }
-    return render(request, 'blog/blog-detail.html', context)
+        context = {
+            'post': post,
+            'prev_post': prev_post,
+            'next_post': next_post,
+            'comments': comments,
+            'form': form,
+        }
+        return render(request, 'blog/blog-detail.html', context)
 
 
 # def blog_category_view(request, cat_name):

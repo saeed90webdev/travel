@@ -26,6 +26,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='blog/', default='blog/default.jpg')
     counted_view = models.IntegerField(default=0)
     status = models.BooleanField(default=False)
+    is_login_required = models.BooleanField(default=False)
     date_time_created = models.DateTimeField(auto_now_add=True)
     date_time_modified = models.DateTimeField(auto_now=True)
     date_time_published = models.DateTimeField(null=True, blank=True)

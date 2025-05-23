@@ -9,11 +9,12 @@ admin.site.register(Category)
 @admin.register(Post)
 class PostAdmin(SummernoteModelAdmin):
     date_hierarchy = "date_time_created"
-    list_display = ('title', 'author', 'status', 'date_time_published', 'counted_view',)
+    list_display = ('title', 'author', 'status', 'is_login_required', 'date_time_published', 'counted_view',)
     list_filter = ('status', 'author',)
     ordering = ('-date_time_created',)
     search_fields = ('title', 'content',)
     summernote_fields = ('content',)
+    list_editable = ('is_login_required', 'status',)
 
 
 @admin.register(Comment)
